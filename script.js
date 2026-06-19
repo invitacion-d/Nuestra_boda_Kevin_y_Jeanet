@@ -140,7 +140,7 @@ function obtenerParametroURL(nombre) {
 document.addEventListener('DOMContentLoaded', () => {
     const nombreInvitado = obtenerParametroURL('nombre');
     const cuposDisponibles = obtenerParametroURL('cupos');
-    const MesaAsignada = obtenerParametroURL('Mesa');
+    const MesaAsignada = obtenerParametroURL(' ');
 
     if (nombreInvitado) {
         document.getElementById('nombre-personalizado').textContent =
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =========================
-    INTRO CON DOBLE VIDEO
+    INTRO CON DOBLE VIDEO CORREGIDO
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -167,9 +167,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.style.overflow = "hidden";
 
+    // Forzar la reproducción del video loop por si el autoplay falla en iOS
+    if (loopVideo) {
+        loopVideo.play().catch(() => {
+            // Si falla por restricciones estrictas, al menos no rompe el script
+            console.log("Autoplay del video loop bloqueado por el navegador.");
+        });
+    }
+
     const transitionVideo = document.createElement("video");
     transitionVideo.src = "https://www.dropbox.com/scl/fi/3nvdwu1qdppn4wb1urij6/Comp-1.mp4?rlkey=2mfis1s0dyptzacxusm0d6a1q&st=xwniqsn6&raw=1";
-    transitionVideo.playsInline = true;
+    
+    // En JS se escribe con la "I" mayúscula para la propiedad del elemento
+    transitionVideo.playsInline = true; 
     transitionVideo.autoplay = false;
     transitionVideo.style.position = "fixed";
     transitionVideo.style.inset = "0";
@@ -182,12 +192,23 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(transitionVideo);
 
     overlay.addEventListener("click", () => {
+        // --- TRUCO PARA SENSURAR LA RESTRICCIÓN DE AUDIO EN IOS ---
+        // Reproducimos la música e INMEDIATAMENTE la pausamos. 
+        // Esto le dice a iOS: "El usuario aprobó este audio con su clic".
+        music.play().then(() => {
+            music.pause();
+            music.currentTime = 0; // Reinicia al segundo 0
+        }).catch(err => console.log("Error activando audio:", err));
+        // ---------------------------------------------------------
 
         loopVideo.pause();
         loopVideo.style.display = "none";
 
         transitionVideo.style.display = "block";
-        transitionVideo.play();
+        
+        // En iOS, a veces los videos creados dinámicamente necesitan un empujón cargados
+        transitionVideo.load(); 
+        transitionVideo.play().catch((e) => console.log("Error transition video:", e));
 
         transitionVideo.onended = () => {
             transitionVideo.classList.add("fade-out");
@@ -195,7 +216,11 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 transitionVideo.remove();
                 overlay.remove();
-                music.play().catch(()=>{});
+                
+                // Ahora que el audio ya fue "aprobado" por el clic, 
+                // correrá sin problemas dentro de este setTimeout.
+                music.play().catch((e) => console.log("Error al reproducir música al final:", e));
+                
                 document.body.style.overflow = "auto";
             }, 1000);
         };
@@ -204,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================
-    VIDEO SECCIÓN 3
+    VIDEO SECCIÓN 3 (Asegúrate de que sea MUTED en HTML)
 ========================= */
 const seccion3 = document.getElementById('seccion3');
 const videoSeccion3 = document.getElementById('video-seccion3');
@@ -214,6 +239,9 @@ if (seccion3 && videoSeccion3) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 videoSeccion3.style.display = 'block';
+                // En móviles, cualquier video que se reproduzca solo DEBE estar muteado
+                videoSeccion3.muted = true; 
+                videoSeccion3.playsInline = true;
                 videoSeccion3.play().catch(()=>{});
             } else {
                 videoSeccion3.pause();
