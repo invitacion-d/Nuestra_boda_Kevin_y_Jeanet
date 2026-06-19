@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda Kevin y Janeth</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/Aleg160/Imgbod/refs/heads/main/logo%20AK.png" type="image/LG-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Video de introducción -->
+    <video id="intro-video" autoplay muted loop playsinline>
+        <source src="https://www.dropbox.com/scl/fi/xqu70baciakdefqtec5bi/invitacion-gif.mp4?rlkey=ygp8jgia2mztfdtl1pber7leo&st=m4ocu3w9&raw=1" type="video/mp4">
+    </video>
+
+    <!-- Overlay negro -->
+    <div id="intro-overlay"></div>
+
+    <!-- Música -->
+    <audio id="background-music" loop>
+        <source src="https://www.dropbox.com/scl/fi/sn1oxibikp0bbdnrcu56k/Contigo-Hasta-El-Final.mp3?rlkey=xecwlwv9ub3u7epu7zlgxy1zd&st=ig84oha8&raw=1" type="audio/mp3">
+    </audio>
+
+    <!-- Sección de la Portada -->
+    <div class="scroll-section">
+        <div id="seccion-portada" class="container-section">
+        </div>
+    </div>
+
+    <!-- Sección de la Invitacion -->
+    <div class="scroll-section">
+        <div id="seccion-invitado" class="container-section">
+        </div>
+    </div>
+
+    <!-- Sección de Imagen de los Padres -->
+    <div class="scroll-section">
+        <div id="seccion-padres" class="container-section">
+        </div>
+    </div>
+
+    <!--seccion dia-->
+    <div class="scroll-section">
+        <div id="seccion-dia" class="container-section">
+        <p class="font-optima italic text-gray-700 text-2xl mb-0 leading-tight">ㅤ</p>   
+        <p style="font-size: 25px; color: #ae6450; font-family: 'Cormorant Garamond', serif;" class="preconnect leading-tight">Tenemos el honor de invitarte a celebrar nuestra unión en matrimonio.</p>
+    <br>
+            <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/FDate.png" alt="Invitación boda" class="mx-auto w-34 mb-6">
+    <br>
+        <p class="font-optima italic text-gray-700 text-3xl mb-0 leading-tight">
+                solo faltan
+            </p>
+
+            <div class="countdown-container flex justify-center items-center font-sans dynamic-colors select-none">
+    
+        <div class="flex flex-col items-center">
+            <span class="text-6xl md:text-8xl font-bold tracking-tight text-[#c2410c]" id="days">00</span>
+            <span class="text-xl md:text-2xl mt-2 text-[#1e293b] font-serif">Días</span>
+        </div>
+        
+        <span class="text-6xl md:text-8xl font-bold text-[#c2410c] self-start px-1 md:px-2">:</span>
+
+        <div class="flex flex-col items-center">
+            <span class="text-6xl md:text-8xl font-bold tracking-tight text-[#c2410c]" id="hours">00</span>
+            <span class="text-xl md:text-2xl mt-2 text-[#1e293b] font-serif">Horas</span>
+        </div>
+        
+        <span class="text-6xl md:text-8xl font-bold text-[#c2410c] self-start px-1 md:px-2">:</span>
+
+        <div class="flex flex-col items-center">
+            <span class="text-6xl md:text-8xl font-bold tracking-tight text-[#c2410c]" id="minutes">00</span>
+            <span class="text-xl md:text-2xl mt-2 text-[#1e293b] font-serif">Min.</span>
+        </div>
+        
+        <span class="text-6xl md:text-8xl font-bold text-[#fdb287] self-start px-1 md:px-2">:</span>
+
+        <div class="flex flex-col items-center">
+            <span class="text-6xl md:text-8xl font-bold tracking-tight text-[#fdb287]" id="seconds">00</span>
+            <span class="text-xl md:text-2xl mt-2 text-[#1e293b] font-serif">Seg.</span>
+        </div>
+    </div>
+
+
+    <br>
+            <div class="w-full flex justify-center">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+de+Kevin+%26+Janneth&dates=20260711T150000/20260711T180000&details=¡Acompáñanos+a+celebrar+nuestra+boda!&location=Iglesia+Evangelica+Casa+de+Dios+y+Puerta+del+Cielo,+San+Miguel+Petapa&ctz=America/Guatemala" target="_blank">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/BtF.png"
+                        alt="Botón para ver la ubicación en el mapa"
+                        class="w-48 h-auto cursor-pointer transition-transform hover:scale-110">
+                    </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de boton y clima -->
+        <div class="scroll-section">
+        <div id="seccion-location" class="container-section">
+
+    <!-- Sección de waze -->
+
+            <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/4.png" alt="Invitación boda" class="mx-auto w-34 mb-1">
+
+            <!-- Botón del mapa -->
+            <div class="w-full flex justify-center">
+            <a href="https://maps.app.goo.gl/xXFZbaLJyHNtbrRU8" target="_blank">
+                <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/BtL.png"
+                alt="Botón para ver la ubicación en el mapa"
+                class="w-48 h-auto cursor-pointer transition-transform hover:scale-110">
+            </a>
+            </div>
+            <br>
+        <iframe
+            src="https://embed.waze.com/iframe?zoom=16&lat=14.505886&lon=-90.566867&pin=1"
+            width="370"
+            height="305"
+            style="border:2px solid; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);"
+            allowfullscreen>
+        </iframe>
+        <br>
+
+        <!-- 🔹 Widget del clima -->
+        <div class="w-full flex justify-center mb-8">
+        <div id="weatherWidget" class="flex flex-col items-center text-gray-800 font-sans bg-transparent p-4">
+            <h2 class="text-2xl font-tt-quaris italic text-center text-gray-900 mb-2">
+            Pronóstico del Clima el Día de la Ceremonia
+            </h2>
+            <br>
+
+            <!-- Descripción general del clima -->
+            <p id="desc" class="text-3xl text-center font-semibold text-gray-900">☀️ --</p>
+
+            <div class="grid grid-cols-2 gap-4 mt-4">
+            <!-- Temperatura -->
+            <div class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-md">
+                <img src="https://img.icons8.com/?size=192&id=urESu1vxT0eG&format=png" alt="Precipitaciones" class="w-10 h-10 mb-2"/>
+                <p class="text-xs font-semibold text-gray-700">TEMPERATURA</p>
+                <p id="temp" class="text-lg font-bold text-blue-600">--° / --°</p>
+            </div>
+
+            <!-- Precipitación -->
+            <div class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-md">
+                <img src="https://img.icons8.com/?size=200&id=Vhgkr6lfmGL8&format=png" alt="Precipitaciones" class="w-10 h-10 mb-2"/>
+                <p class="text-xs font-semibold text-gray-700">PRECIPITACIÓN</p>
+                <p id="prec" class="text-lg font-bold text-blue-600">-- mm</p>
+            </div>
+
+            <!-- Viento -->
+            <div class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-md">
+                <img src="https://img.icons8.com/?size=200&id=wGscuXAAEzt4&format=png" alt="Precipitaciones" class="w-10 h-10 mb-2"/>
+                <p class="text-xs font-semibold text-gray-700">VIENTO</p>
+                <p id="wind" class="text-lg font-bold text-blue-600">-- km/h</p>
+            </div>
+
+            <!-- Probabilidad de lluvia -->
+            <div class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 shadow-md">
+                <img src="https://img.icons8.com/?size=200&id=15360&format=png" alt="Precipitaciones" class="w-10 h-10 mb-2"/>
+                <p class="text-xs font-semibold text-gray-700">PROBAB. DE LLUVIA</p>
+                <p id="rainProb" class="text-lg font-bold text-blue-600">-- %</p>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+<br>
+        <!-- Sección de invitados -->
+    <div class="scroll-section">
+        <div id="seccion-invitados" class="container-section">
+            <!-- Nombre personalizado -->
+            <p id="nombre-personalizado" class="text-great-vibes text-[#d19855] text-6xl mb-3"></p>
+
+            <!-- Texto "Tenemos reservados" -->
+            <p class="font-noto-serif italic text-gray-700 text-3xl mb-2">Tenemos</p>
+
+            <!-- Número de cupos -->
+            <p id="solo-numero-cupos" class="text-great-vibes text-[#d19855] text-6xl mb-1"></p>
+
+            <!-- Texto "Lugares para ustedes" -->
+            <p class="font-noto-serif italic text-gray-700 text-2xl mb-2">Lugares para ustedes y en la mesa</p>
+            <p id="mesa-asignada" class="text-great-vibes text-[#d19855] text-4xl mb-1"></p>
+            
+            <!-- BOTÓN -->
+            <div class="w-full flex justify-center mb-8">
+                <a href="https://wa.link/dls2y4" target="_blank">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/BtC.png"
+                        alt="Botón para confirmar asistencia"
+                        class="w-48 h-auto cursor-pointer transition-transform hover:scale-110">
+                </a>
+            </div>
+        </div>
+    </div>
+
+        <!-- Sección de Imagen -->
+        <div class="scroll-section">
+            <div id="seccion-Ppost" class="container-section">
+            </div>
+        </div>
+
+        <!-- Sección de Imagen -->
+        <div class="scroll-section">
+            <div id="seccion-regalo" class="container-section">
+                <p class="font-noto-serif font-bold text-[#76321b] text-4xl mb-1">Sugerencia de regalo</p>
+                <p class="font-noto-serif text-[#bb7b48] text-1.5xl mb-1">El mejor regalo es tu presencia, pero si deseas tener un detalle con nosotros, puedes elegir algo de la siguiente lista.</p>
+            <a href="https://www.cemaco.com/list/BodaKevinyGladis11072026" target="_blank">
+                <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/BtR.png"
+                    alt="Botón para ver listado"
+                    class="w-48 h-auto cursor-pointer transition-transform hover:scale-110">
+            </a>
+                <p class="font-noto-serif text-[#bb7b48] text-1.5xl mb-1">O puedes abocarte a una tienda de Cemaco y solicitar con nuestro nombre el listado sugerido.</p>
+
+            </div>
+        </div>
+
+            <!-- Sección de Imagen de los album -->
+        <div class="scroll-container">
+
+            <section class="heart-stage">
+
+                <div class="heart" id="heart">
+
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ1.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ2.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ3.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ4.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ5.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ6.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ7.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ8.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ9.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ10.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ11.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ12.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ13.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ14.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ15.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ16.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ17.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ18.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ19.jpeg" class="photo">
+                    <img src="https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/KJ20.jpeg" class="photo">
+
+                </div>
+
+            </section>
+
+        </div>
+
+            <!-- Sección de Logo -->
+            <div class="scroll-section">
+                <div id="seccion-logo" class="container-section">
+                </div>
+            </div>
+
+            <!-- Logica de la pagina -->
+<script src="script.js"></script>
+</body>
+
+</html>
