@@ -28,10 +28,26 @@
 
 <body class="bg-gray-50">
 
-    <!-- Video de introducción -->
+<div id="intro-container">
+    
     <video id="intro-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
         <source src="https://www.dropbox.com/scl/fi/xqu70baciakdefqtec5bi/invitacion-gif.mp4?rlkey=ygp8jgia2mztfdtl1pber7leo&st=m4ocu3w9&raw=1" type="video/mp4">
     </video>
+
+    <video id="transition-video" muted playsinline webkit-playsinline preload="auto">
+        <source src="https://www.dropbox.com/scl/fi/3nvdwu1qdppn4wb1urij6/Comp-1.mp4?rlkey=2mfis1s0dyptzacxusm0d6a1q&st=xwniqsn6&raw=1" type="video/mp4">
+    </video>
+
+    <div id="intro-overlay"></div>
+    
+</div>
+
+<audio id="background-music" loop preload="auto">
+    <source src="https://www.dropbox.com/scl/fi/sn1oxibikp0bbdnrcu56k/Contigo-Hasta-El-Final.mp3?rlkey=xecwlwv9ub3u7epu7zlgxy1zd&st=ig84oha8&raw=1" type="audio/mp3">
+</audio>
+
+<main id="main-content">
+    </main>
 
     <!-- Overlay negro -->
     <div id="intro-overlay"></div>
@@ -276,4 +292,5 @@
             <!-- Logica de la pagina -->
 <script src="script.js"></script>
 </body>
+
 </html>
