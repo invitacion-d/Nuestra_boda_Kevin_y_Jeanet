@@ -159,99 +159,105 @@ document.addEventListener('DOMContentLoaded', () => {
 /* =========================
     INTRO CON DOBLE VIDEO CORREGIDO
 ========================= */
-document.addEventListener("DOMContentLoaded", () => {
+// Optimizamos el inicio para que se ejecute agresivamente rápido
+        const loopVideo = document.getElementById("intro-video");
+        const overlay = document.getElementById("intro-overlay");
+        const music = document.getElementById("background-music");
 
-    const loopVideo = document.getElementById("intro-video");
-    const overlay = document.getElementById("intro-overlay");
-    const music = document.getElementById("background-music");
+        // Bloquear scroll inicial
+        document.body.style.overflow = "hidden";
 
-    document.body.style.overflow = "hidden";
+        // Forzar play del video inicial INMEDIATAMENTE antes de que cargue el resto del DOM
+        if (loopVideo) {
+            loopVideo.muted = true;
+            loopVideo.play().catch(() => {
+                // Si el iPhone está en "Modo de bajo consumo", fallará el autoplay nativo.
+                // En ese caso, este truco lo arranca al más mínimo toque que haga el usuario en la pantalla de forma invisible.
+                const arrancarVideoEnMovil = () => {
+                    loopVideo.play();
+                    document.removeEventListener('touchstart', arrancarVideoEnMovil);
+                    document.removeEventListener('click', arrancarVideoEnMovil);
+                };
+                document.addEventListener('touchstart', arrancarVideoEnMovil);
+                document.addEventListener('click', arrancarVideoEnMovil);
+            });
+        }
 
-    // Forzar la reproducción del video loop por si el autoplay falla en iOS
-    if (loopVideo) {
-        loopVideo.play().catch(() => {
-            // Si falla por restricciones estrictas, al menos no rompe el script
-            console.log("Autoplay del video loop bloqueado por el navegador.");
-        });
-    }
+        // Crear el segundo video de transición en segundo plano
+        const transitionVideo = document.createElement("video");
+        transitionVideo.src = "https://www.dropbox.com/scl/fi/3nvdwu1qdppn4wb1urij6/Comp-1.mp4?rlkey=2mfis1s0dyptzacxusm0d6a1q&st=xwniqsn6&raw=1";
+        transitionVideo.playsInline = true; 
+        transitionVideo.webkitPlaysInline = true;
+        transitionVideo.autoplay = false;
+        transitionVideo.muted = true; // Muy importante para asegurar que iOS lo deje reproducir
+        transitionVideo.style.position = "fixed";
+        transitionVideo.style.inset = "0";
+        transitionVideo.style.width = "100%";
+        transitionVideo.style.height = "100%";
+        transitionVideo.style.objectFit = "cover";
+        transitionVideo.style.zIndex = "10000";
+        transitionVideo.style.display = "none";
+        document.body.appendChild(transitionVideo);
 
-    const transitionVideo = document.createElement("video");
-    transitionVideo.src = "https://www.dropbox.com/scl/fi/3nvdwu1qdppn4wb1urij6/Comp-1.mp4?rlkey=2mfis1s0dyptzacxusm0d6a1q&st=xwniqsn6&raw=1";
-    
-    // En JS se escribe con la "I" mayúscula para la propiedad del elemento
-    transitionVideo.playsInline = true; 
-    transitionVideo.autoplay = false;
-    transitionVideo.style.position = "fixed";
-    transitionVideo.style.inset = "0";
-    transitionVideo.style.width = "100%";
-    transitionVideo.style.height = "100%";
-    transitionVideo.style.objectFit = "cover";
-    transitionVideo.style.zIndex = "10000";
-    transitionVideo.style.display = "none";
+        // Evento cuando el usuario presiona la pantalla (el Overlay)
+        overlay.addEventListener("click", () => {
+            
+            // TRUCO PARA LA MÚSICA EN IOS: 
+            // Activamos el canal de audio justo en el clic legítimo del usuario
+            music.play().then(() => {
+                music.pause();
+                music.currentTime = 0;
+            }).catch(e => console.log("Audio prep-error:", e));
 
-    document.body.appendChild(transitionVideo);
-
-    overlay.addEventListener("click", () => {
-        // --- TRUCO PARA SENSURAR LA RESTRICCIÓN DE AUDIO EN IOS ---
-        // Reproducimos la música e INMEDIATAMENTE la pausamos. 
-        // Esto le dice a iOS: "El usuario aprobó este audio con su clic".
-        music.play().then(() => {
-            music.pause();
-            music.currentTime = 0; // Reinicia al segundo 0
-        }).catch(err => console.log("Error activando audio:", err));
-        // ---------------------------------------------------------
-
-        loopVideo.pause();
-        loopVideo.style.display = "none";
-
-        transitionVideo.style.display = "block";
-        
-        // En iOS, a veces los videos creados dinámicamente necesitan un empujón cargados
-        transitionVideo.load(); 
-        transitionVideo.play().catch((e) => console.log("Error transition video:", e));
-
-        transitionVideo.onended = () => {
-            transitionVideo.classList.add("fade-out");
-
-            setTimeout(() => {
-                transitionVideo.remove();
-                overlay.remove();
-                
-                // Ahora que el audio ya fue "aprobado" por el clic, 
-                // correrá sin problemas dentro de este setTimeout.
-                music.play().catch((e) => console.log("Error al reproducir música al final:", e));
-                
-                document.body.style.overflow = "auto";
-            }, 1000);
-        };
-
-    }, { once: true });
-});
-
-/* =========================
-    VIDEO SECCIÓN 3 (Asegúrate de que sea MUTED en HTML)
-========================= */
-const seccion3 = document.getElementById('seccion3');
-const videoSeccion3 = document.getElementById('video-seccion3');
-
-if (seccion3 && videoSeccion3) {
-    const observerVideo = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                videoSeccion3.style.display = 'block';
-                // En móviles, cualquier video que se reproduzca solo DEBE estar muteado
-                videoSeccion3.muted = true; 
-                videoSeccion3.playsInline = true;
-                videoSeccion3.play().catch(()=>{});
-            } else {
-                videoSeccion3.pause();
-                videoSeccion3.style.display = 'none';
+            // Transición de videos
+            if(loopVideo) {
+                loopVideo.pause();
+                loopVideo.style.display = "none";
             }
-        });
-    }, { threshold: 0.5 });
 
-    observerVideo.observe(seccion3);
-}
+            transitionVideo.style.display = "block";
+            transitionVideo.load();
+            transitionVideo.play().catch(e => console.log("Error transition:", e));
+
+            transitionVideo.onended = () => {
+                transitionVideo.classList.add("fade-out");
+
+                setTimeout(() => {
+                    transitionVideo.remove();
+                    overlay.remove();
+                    
+                    // La música ahora se reproducirá perfectamente sin bloqueos de iOS
+                    music.play().catch(e => console.log("Error música final:", e));
+                    
+                    document.body.style.overflow = "auto";
+                }, 1000);
+            };
+
+        }, { once: true });
+
+        /* ==========================================
+            VIDEO SECCIÓN 3
+        ========================================== */
+        const seccion3 = document.getElementById('seccion3');
+        const videoSeccion3 = document.getElementById('video-seccion3');
+
+        if (seccion3 && videoSeccion3) {
+            const observerVideo = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        videoSeccion3.style.display = 'block';
+                        videoSeccion3.muted = true;
+                        videoSeccion3.playsInline = true;
+                        videoSeccion3.play().catch(()=>{});
+                    } else {
+                        videoSeccion3.pause();
+                        videoSeccion3.style.display = 'none';
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            observerVideo.observe(seccion3);
+        }
 
 /* =========================
     COLLAGE DE FOTOS
