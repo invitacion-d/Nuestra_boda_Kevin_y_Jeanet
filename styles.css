@@ -1,4 +1,10 @@
 body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            /* El JS controlará el overflow para bloquear/permitir el scroll */
+            overflow: hidden; 
             font-family: 'Inter', sans-serif;
             background-color: #f3e9d2; 
             color: #4b3832;
@@ -100,6 +106,17 @@ script
         #intro-video.hidden {
         opacity: 0;
         pointer-events: none;
+        }
+
+        #intro-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999; /* El número más alto para estar encima de TODO */
+            display: block; /* Se oculta desde JS */
+            background-color: black; /* Fondo negro mientras carga el video */
         }
 
         .scroll-section {
@@ -415,23 +432,54 @@ script
         }
 
     /* Video de introducción */
-        #intro-video {
+        #intro-container {
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            z-index: 9998;
+            z-index: 99999; /* El número más alto para estar encima de TODO */
+            display: block; /* Se oculta desde JS */
+            background-color: black; /* Fondo negro mientras carga el video */
+        }
+
+        #intro-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cubre toda la pantalla sin deformarse */
+            z-index: 1; /* Dentro del contenedor */
         }
     
     /* Overlay negro */
         #intro-overlay {
-            position: fixed;
-            top: 0; left: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999;
-            transition: opacity 1s ease;
+            background: rgba(0,0,0,0); /* Totalmente invisible */
+            z-index: 2; /* Encima del video inicial */
+            cursor: pointer;
+        }
+
+        .transition-video-style {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 100000; /* Incluso más arriba que el contenedor inicial */
+            background-color: black;
+        }
+
+        /* Clase para el efecto de desaparición final */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+            pointer-events: none; /* No capta clics mientras desaparece */
         }
 
         #intro-overlay.hidden,
