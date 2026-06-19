@@ -1,579 +1,310 @@
+/* =========================================
+   ESTADO INICIAL: FONDO SÓLIDO ABSOLUTO
+   ========================================= */
 body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            /* El JS controlará el overflow para bloquear/permitir el scroll */
-            overflow: hidden; 
-            font-family: 'Inter', sans-serif;
-            background-color: #f3e9d2; 
-            color: #4b3832;
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/BGT.png'); 
-            background-attachment: fixed; 
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat; 
-        }
-
-        @font-face {
-            font-family: 'Optima Regular';
-            src: url('https://raw.githubusercontent.com/Aleg160/Imgbod/main/fonts/OPTIMA.TTF') format('truetype');
-            font-weight: 400;
-            font-style: normal;
-            }
-
-        @font-face {
-            font-family: 'Optima Bold';
-            src: url('https://raw.githubusercontent.com/Aleg160/Imgbod/main/fonts/OPTIMA_B.TTF') format('truetype');
-            font-weight: 700;
-            font-style: normal;
-            }
-
-        @font-face {
-            font-family: 'Optima Italic';
-            src: url('https://raw.githubusercontent.com/Aleg160/Imgbod/main/fonts/Optima_Italic.ttf') format('truetype');
-            font-weight: 400;
-            font-style: italic;
-            }
-
-        @font-face {
-            font-family: 'TT Quaris';
-            src: url('https://raw.githubusercontent.com/Aleg160/Imgbod/main/fuentes/TT%20Quaris%20Font%20Family/fonts/TTQuaris-Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-        
-        @font-face {
-            font-family: 'Citadel Script';
-            /* CORRECCIÓN: Se cambió raw.githubusercontent por el CDN de jsDelivr */
-            src: url('https://cdn.jsdelivr.net/gh/Aleg160/Imgbod@main/fuentes/TT%20Quaris%20Font%20Family/fonts/citadel-script-std.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap; /* Añadido: Mejora la velocidad de carga visual */
-        }
-
-        .font-citadel {
-            font-family: 'Citadel Script', cursive;
-        }
-            /* Clase personalizada para tu fuente */
-        .font-optima {
-            font-family: 'Optima Regular', sans-serif;
-        }
-
-        .font-noto-serif {
-            font-family: 'Noto Serif', serif;
-        }
-
-        .text-great-vibes {
-            font-family: 'Great Vibes', cursive;
-        }
-
-        .pinyon-script-regular {
-            font-family: "Pinyon Script", cursive;
-            font-weight: 400;
-            font-style: normal;
-            }
-
-        .font-tt-quaris {
-            font-family: 'TT Quaris', sans-serif;
-        }
-        
-script 
-        /* Video de introducción */
-        #intro-video {
-            position: fixed;
-            top: 0; left: 0;
-            width: auto;
-            height: 1920px;
-            object-fit: cover;
-            z-index: 9998;
-        }
-
-        /* Overlay negro */
-        #intro-overlay {
-            cursor: pointer;
-            position: fixed;
-            top: 0; left: 0;
-            width: auto;
-            height: 1920px;
-            z-index: 9999;
-            transition: opacity 1s ease;
-        }
-
-        #intro-overlay.hidden,
-        #intro-video.hidden {
-        opacity: 0;
-        pointer-events: none;
-        }
-
-        #intro-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 99999; /* El número más alto para estar encima de TODO */
-            display: block; /* Se oculta desde JS */
-            background-color: black; /* Fondo negro mientras carga el video */
-        }
-
-        .scroll-section {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-            will-change: opacity, transform;
-            text-align: center;
-
-            max-width: 600px; /* Define el ancho MÁXIMO */
-            width: 100%;       /* Ocupa el 100% del espacio disponible HASTA el máximo */
-            margin-left: auto;   /* Centra la sección horizontalmente */
-            margin-right: auto;
-        }
-
-        .section-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #7c0000;
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 9999px; /* Cambio: Uso de un valor grande para esquinas completamente redondeadas */
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #967554;
-            transform: translateY(-2px);
-        }
-
-        .icon-small {
-            width: 40px;
-            height: 40px;
-        }
-
-        .countdown-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #7c0000;
-        }
-
-        .countdown-label {
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: #4b3832;
-            margin-top: 0.25rem;
-        }
-
-        .image-container {
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .image-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .play-pause-btn {
-            background-color: transparent;
-            border: 2px solid white;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            margin-top: 1rem;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .play-pause-btn:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Limpiamos la clase para que ya no sea un recuadro */
-        .container-section {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 4rem;
-            margin-bottom: 4rem;
-        }
-
-        .countdown {
-            gap: 0.5rem; /* espacio entre números y dos puntos */
-        }
-
-        .countdown-item {
-            min-width: 2.7ch; /* mantiene el ancho uniforme */
-            text-align: center;
-        }
-
-        .separator {
-            margin: 0 0.3rem;
-            color: #5b1a0a;
-        }
-
-        .countdown-labels {
-            font-family: Optima, "Segoe UI", Candara, "Noto Sans", sans-serif;
-            font-style: italic;
-            font-size: 1.0rem; /* más pequeña */
-            letter-spacing: 0.05em;
-            text-align: center;
-        }
-
-        /* Asegura que todos los nombres queden alineados */
-        .countdown-labels div {
-            width: 5rem; /* ajusta si quieres más o menos espacio */
-        }
-
-        #seccion-portada {
-            background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/1.png');
-            background-size: cover;
-            background-position: center;
-            width: 100%;           /* ocupa todo el eje horizontal disponible */
-            max-width: 1080px;      /* no crece más que el diseño original */
-            aspect-ratio: 1080 / 1920; /* mantiene la proporción 1080x1920 */
-            height: auto;          /* la altura se calcula según el ancho */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;        /* centra horizontalmente */
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #seccion-invitado {
-            background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/2.png');
-            background-size: cover;
-            background-position: center;
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / 960;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #seccion-padres {
-            background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/3.png');
-            background-size: cover;
-            background-position: center;
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / 1920;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-            #seccion-direccion {
-            background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/4.png');
-            background-size: cover;
-            background-position: center;
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / 1920;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #seccion-dia {
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / auto;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        
-        #seccion-invitados {
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / auto;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #seccion-location {
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / auto;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #seccion-Ppost {
-            background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/5.png');
-            background-size: cover;
-            background-position: center;
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / 1920;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #seccion-album {
-            background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/6.png');
-            background-size: cover;
-            background-position: center;
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / 1920;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #seccion-logo {
-            background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/8.png');
-            background-size: cover;
-            background-position: center;
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / 1080;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #seccion-regalo {
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / 500;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .imagen-completa {
-            width: 100%;
-            max-width: 1080px;
-            aspect-ratio: 1080 / 1920;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-    /* Video de introducción */
-        #intro-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 99999; /* El número más alto para estar encima de TODO */
-            display: block; /* Se oculta desde JS */
-            background-color: black; /* Fondo negro mientras carga el video */
-        }
-
-        #intro-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Cubre toda la pantalla sin deformarse */
-            z-index: 1; /* Dentro del contenedor */
-        }
-    
-    /* Overlay negro */
-        #intro-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0); /* Totalmente invisible */
-            z-index: 2; /* Encima del video inicial */
-            cursor: pointer;
-        }
-
-        .transition-video-style {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 100000; /* Incluso más arriba que el contenedor inicial */
-            background-color: black;
-        }
-
-        /* Clase para el efecto de desaparición final */
-        .fade-out {
-            opacity: 0;
-            transition: opacity 1s ease-out;
-            pointer-events: none; /* No capta clics mientras desaparece */
-        }
-
-        #intro-overlay.hidden,
-        #intro-video.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .fade-out {
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-
-        .scroll-container{
-    height:2200vh;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Bloqueado por JS hasta terminar la intro */
+    background-color: #000000; /* Negro absoluto inicial, la web no se ve */
+    font-family: 'Inter', sans-serif;
 }
 
-.heart-stage{
-    position:sticky;
-    top:0;
-    width:100%;
-    height:100vh;
-    overflow:hidden;
+/* Se activa automáticamente al terminar el segundo video */
+body.boda-activada {
+    overflow-x: hidden;
+    overflow-y: auto; /* Libera el scroll para el collage y el resto de la web */
+    background-color: #f3e9d2; 
+    background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/BGT.png'); 
+    background-attachment: fixed; 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    transition: background-color 0.5s ease;
 }
 
-.heart{
-    position:relative;
-    width:95vw;
-    max-width:700px;
-    height:100vh;
-    margin:auto;
+/* =========================================
+   FUENTES TIPOGRÁFICAS
+   ========================================= */
+@font-face {
+    font-family: 'Optima Regular';
+    src: url('https://raw.githubusercontent.com/Aleg160/Imgbod/main/fonts/OPTIMA.TTF') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Optima Bold';
+    src: url('https://raw.githubusercontent.com/Aleg160/Imgbod/main/fonts/OPTIMA_B.TTF') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Optima Italic';
+    src: url('https://raw.githubusercontent.com/Aleg160/Imgbod/main/fonts/Optima_Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'TT Quaris';
+    src: url('https://raw.githubusercontent.com/Aleg160/Imgbod/main/fuentes/TT%20Quaris%20Font%20Family/fonts/TTQuaris-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Citadel Script';
+    src: url('https://cdn.jsdelivr.net/gh/Aleg160/Imgbod@main/fuentes/TT%20Quaris%20Font%20Family/fonts/citadel-script-std.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
-.photo{
-    position:absolute;
+.font-citadel { font-family: 'Citadel Script', cursive; }
+.font-optima { font-family: 'Optima Regular', sans-serif; }
+.font-noto-serif { font-family: 'Noto Serif', serif; }
+.text-great-vibes { font-family: 'Great Vibes', cursive; }
+.pinyon-script-regular { font-family: "Pinyon Script", cursive; font-weight: 400; font-style: normal; }
+.font-tt-quaris { font-family: 'TT Quaris', sans-serif; }
 
-    width:min(75vw, 320px);
-    height:min(75vw, 320px);
-
-    object-fit:cover;
-
-    left:50%;
-    top:50%;
-
-    opacity:0;
-
-    border-radius:16px;
-
-    transform:translate(-50%, -50%) scale(.8);
-
-    box-shadow:0 15px 40px rgba(0,0,0,.35);
-
-    transition:
-        opacity .15s linear,
-        transform .15s linear,
-        width .15s linear,
-        height .15s linear;
+/* =========================================
+   ESTILOS DE LA INTRO DE VIDEO (BLOQUE ÚNICO)
+   ========================================= */
+#intro-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    z-index: 99998;
+    transition: opacity 1s ease;
 }
 
-@keyframes heartbeat{
-
-    0%{
-        transform:scale(1);
-    }
-
-    25%{
-        transform:scale(1.05);
-    }
-
-    50%{
-        transform:scale(1);
-    }
-
-    75%{
-        transform:scale(1.05);
-    }
-
-    100%{
-        transform:scale(1);
-    }
+#intro-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
 }
 
-.heartbeat{
-    animation:heartbeat 1s ease-in-out;
+/* El segundo video vive directamente encima del primero con opacidad 0 */
+#transition-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+    opacity: 0;
+    background-color: #000000;
+    transition: opacity 0.3s ease; /* Entrada fluida sin parpadeos negros */
 }
 
-@media (max-width:768px){
+#intro-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 3; /* Siempre arriba del todo para capturar el toque */
+    cursor: pointer;
+}
 
-    .heart{
-        width:100vw;
-    }
+.transition-video-style {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 100000; /* Prioridad máxima sobre el loop */
+    background-color: black;
+}
 
-    .photo{
-        border-radius:12px;
-    }
+/* Clases auxiliares para ocultar mediante JS */
+#intro-overlay.hidden,
+#intro-video.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
 
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    pointer-events: none;
+}
+
+/* =========================================
+   ESTILOS DE LAS SECCIONES DE LA WEB
+   ========================================= */
+/* CONTENEDOR DE LA WEB (Invisible antes del clic) */
+#main-content {
+    display: none;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+    transition: opacity 1s ease-in;
+}
+
+#main-content.preparado { display: block; }
+#main-content.visible { opacity: 1; }
+
+/* Animación de desvanecimiento final */
+.fade-out-intro {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* INTRO CONTAINER FIXED */
+#intro-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000; /* Refuerzo de color sólido bajo el primer video */
+    z-index: 99998;
+}
+
+.scroll-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+    will-change: opacity, transform;
+    text-align: center;
+    max-width: 600px; 
+    width: 100%;      
+    margin-left: auto;   
+    margin-right: auto;
+}
+
+.section-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.container-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem;
+    margin-bottom: 4rem;
+}
+
+/* --- Redimensionado Adaptable de tus Secciones de Boda (1080px) --- */
+#seccion-portada, #seccion-padres, #seccion-direccion, #seccion-Ppost, #seccion-album, .imagen-completa {
+    width: 100%;
+    max-width: 1080px;
+    aspect-ratio: 1080 / 1920;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#seccion-invitado {
+    width: 100%;
+    max-width: 1080px;
+    aspect-ratio: 1080 / 960;
+    background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/2.png');
+    background-size: cover;
+    background-position: center;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#seccion-portada { background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/1.png'); }
+#seccion-padres { background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/3.png'); }
+#seccion-direccion { background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/4.png'); }
+#seccion-Ppost { background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/5.png'); }
+#seccion-album { background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/6.png'); }
+#seccion-logo { background-image: url('https://raw.githubusercontent.com/invitacion-d/Imgbod/refs/heads/main/boda_Kevin/8.png'); background-size: cover; background-position: center; width: 100%; max-width: 1080px; aspect-ratio: 1080 / 1080; height: auto; display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+#seccion-dia, #seccion-invitados, #seccion-location, #seccion-regalo { width: 100%; max-width: 1080px; aspect-ratio: 1080 / auto; height: auto; display: flex; flex-direction: column; align-items: center; text-align: center; margin: 0 auto; padding: 20px; box-sizing: border-box; }
+#seccion-regalo { aspect-ratio: 1080 / 500; }
+
+/* COMPONENTES COMPLEMENTARIOS */
+.btn { display: inline-block; background-color: #7c0000; color: white; padding: 1rem 2.5rem; border-radius: 9999px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: background-color 0.3s, transform 0.3s; }
+.btn:hover { background-color: #967554; transform: translateY(-2px); }
+.icon-small { width: 40px; height: 40px; }
+.image-container { border-radius: 15px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
+.image-container img { width: 100%; height: auto; display: block; }
+
+/* CONTADOR RELOJ */
+.countdown { gap: 0.5rem; }
+.countdown-item { display: flex; flex-direction: column; align-items: center; font-size: 1.5rem; font-weight: 700; color: #7c0000; min-width: 2.7ch; text-align: center; }
+.countdown-label { font-size: 0.8rem; font-weight: 400; color: #4b3832; margin-top: 0.25rem; }
+.separator { margin: 0 0.3rem; color: #5b1a0a; }
+.countdown-labels { font-family: Optima, "Segoe UI", Candara, "Noto Sans", sans-serif; font-style: italic; font-size: 1.0rem; letter-spacing: 0.05em; text-align: center; }
+.countdown-labels div { width: 5rem; }
+
+/* =========================================
+   ESTILOS EXCLUSIVOS DEL COLLAGE CORAZÓN (STIO TRABAJADO)
+   ========================================= */
+.scroll-container {
+    height: 2200vh; /* Requiere este alto para calcular las fases del corazón */
+}
+
+.heart-stage {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.heart {
+    position: relative;
+    width: 95vw;
+    max-width: 700px;
+    height: 100vh;
+    margin: auto;
+}
+
+.photo {
+    position: absolute;
+    width: min(75vw, 320px);
+    height: min(75vw, 320px);
+    object-fit: cover;
+    left: 50%;
+    top: 50%;
+    opacity: 0;
+    border-radius: 16px;
+    transform: translate(-50%, -50%) scale(.8);
+    box-shadow: 0 15px 40px rgba(0,0,0,.35);
+    /* Transiciones suaves calculadas por el JS durante el scroll */
+    transition: opacity .15s linear, transform .15s linear, width .15s linear, height .15s linear;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.05); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.heartbeat {
+    animation: heartbeat 1s ease-in-out;
+}
+
+/* AJUSTES MÓVILES */
+@media (max-width: 768px) {
+    .heart { width: 100vw; }
+    .photo { border-radius: 12px; }
 }
