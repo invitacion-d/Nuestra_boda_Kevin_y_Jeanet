@@ -140,7 +140,7 @@ function obtenerParametroURL(nombre) {
 document.addEventListener('DOMContentLoaded', () => {
     const nombreInvitado = obtenerParametroURL('nombre');
     const cuposDisponibles = obtenerParametroURL('cupos');
-    const MesaAsignada = obtenerParametroURL('mesa');
+    const MesaAsignada = obtenerParametroURL('Mesa');
 
     if (nombreInvitado) {
         document.getElementById('nombre-personalizado').textContent =
