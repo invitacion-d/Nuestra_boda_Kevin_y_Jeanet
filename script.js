@@ -140,7 +140,7 @@ function obtenerParametroURL(nombre) {
 document.addEventListener('DOMContentLoaded', () => {
     const nombreInvitado = obtenerParametroURL('nombre');
     const cuposDisponibles = obtenerParametroURL('cupos');
-    const MesaAsignada = obtenerParametroURL(' ');
+    const MesaAsignada = obtenerParametroURL('mesa');
 
     if (nombreInvitado) {
         document.getElementById('nombre-personalizado').textContent =
@@ -160,104 +160,117 @@ document.addEventListener('DOMContentLoaded', () => {
     INTRO CON DOBLE VIDEO CORREGIDO
 ========================= */
 // Optimizamos el inicio para que se ejecute agresivamente rápido
-        const loopVideo = document.getElementById("intro-video");
-        const overlay = document.getElementById("intro-overlay");
-        const music = document.getElementById("background-music");
+const introContainer = document.getElementById("intro-container");
+const loopVideo = document.getElementById("intro-video");
+const transitionVideo = document.getElementById("transition-video");
+const overlay = document.getElementById("intro-overlay");
+const music = document.getElementById("background-music");
+const mainContent = document.getElementById("main-content");
 
-        // Bloquear scroll inicial
-        document.body.style.overflow = "hidden";
+// Bloquear el scroll nativo al cargar la página por completo
+document.body.style.overflow = "hidden";
+document.documentElement.style.overflow = "hidden";
 
-        // Forzar play del video inicial INMEDIATAMENTE antes de que cargue el resto del DOM
-        if (loopVideo) {
-            loopVideo.muted = true;
-            loopVideo.play().catch(() => {
-                // Si el iPhone está en "Modo de bajo consumo", fallará el autoplay nativo.
-                // En ese caso, este truco lo arranca al más mínimo toque que haga el usuario en la pantalla de forma invisible.
-                const arrancarVideoEnMovil = () => {
-                    loopVideo.play();
-                    document.removeEventListener('touchstart', arrancarVideoEnMovil);
-                    document.removeEventListener('click', arrancarVideoEnMovil);
-                };
-                document.addEventListener('touchstart', arrancarVideoEnMovil);
-                document.addEventListener('click', arrancarVideoEnMovil);
-            });
-        }
+// Forzar el inicio del primer video (Loop)
+if (loopVideo) {
+    loopVideo.muted = true;
+    loopVideo.playsInline = true;
+    loopVideo.play().catch(() => {
+        const arrancarIntro = () => {
+            loopVideo.play().catch(e => console.log(e));
+            document.removeEventListener('touchstart', arrancarIntro);
+        };
+        document.addEventListener('touchstart', arrancarIntro);
+    });
+}
 
-        // Crear el segundo video de transición en segundo plano
-        const transitionVideo = document.createElement("video");
-        transitionVideo.src = "https://www.dropbox.com/scl/fi/3nvdwu1qdppn4wb1urij6/Comp-1.mp4?rlkey=2mfis1s0dyptzacxusm0d6a1q&st=xwniqsn6&raw=1";
-        transitionVideo.playsInline = true; 
-        transitionVideo.webkitPlaysInline = true;
-        transitionVideo.autoplay = false;
-        transitionVideo.muted = true; // Muy importante para asegurar que iOS lo deje reproducir
-        transitionVideo.style.position = "fixed";
-        transitionVideo.style.inset = "0";
-        transitionVideo.style.width = "100%";
-        transitionVideo.style.height = "100%";
-        transitionVideo.style.objectFit = "cover";
-        transitionVideo.style.zIndex = "10000";
-        transitionVideo.style.display = "none";
-        document.body.appendChild(transitionVideo);
+// =========================================
+// EVENTO DE CLIC CORREGIDO
+// =========================================
+overlay.addEventListener("click", () => {
+    
+    // Desbloquear canal de música para iOS de inmediato
+    if (music) {
+        music.play().then(() => {
+            music.pause();
+            music.currentTime = 0;
+        }).catch(e => console.log("Audio bypass:", e));
+    }
 
-        // Evento cuando el usuario presiona la pantalla (el Overlay)
-        overlay.addEventListener("click", () => {
-            
-            // TRUCO PARA LA MÚSICA EN IOS: 
-            // Activamos el canal de audio justo en el clic legítimo del usuario
-            music.play().then(() => {
-                music.pause();
-                music.currentTime = 0;
-            }).catch(e => console.log("Audio prep-error:", e));
+    // Preparar la estructura de la web en el DOM (Sigue invisible)
+    if (mainContent) {
+        mainContent.classList.add("preparado");
+    }
 
-            // Transición de videos
-            if(loopVideo) {
-                loopVideo.pause();
-                loopVideo.style.display = "none";
+    let webRevelada = false;
+
+    if (transitionVideo) {
+        // En lugar de ocultarlo con display, el CSS maneja opacidad. 
+        // Le subimos la opacidad para que tape al loop.
+        transitionVideo.style.opacity = "1"; 
+        
+        // Ejecutamos la reproducción directa (sin volver a cargar el src)
+        transitionVideo.play().then(() => {
+            console.log("Transición reproduciéndose exitosamente.");
+            if (loopVideo) loopVideo.pause();
+            if (overlay) overlay.style.display = "none";
+        }).catch(err => {
+            // Si el navegador de verdad bloquea el video por completo, recién aquí salta a la web
+            console.log("Error crítico al reproducir, aplicando salida de emergencia:", err);
+            mostrarInvitacionFinal();
+        });
+
+        // Al finalizar el video por completo, se revela la web
+        transitionVideo.onended = () => {
+            mostrarInvitacionFinal();
+        };
+
+        /* RESPALDO DE SEGURIDAD EXTENDIDO:
+           Subimos el tiempo a 8 segundos. Si el internet del invitado es algo lento, 
+           le da un margen de tiempo para cargar los primeros frames del video de Dropbox 
+           en lugar de saltárselo al instante.
+        */
+        setTimeout(() => {
+            if (!webRevelada) {
+                console.log("Respaldo activado por tiempo límite.");
+                mostrarInvitacionFinal();
             }
+        }, 8000); 
 
-            transitionVideo.style.display = "block";
-            transitionVideo.load();
-            transitionVideo.play().catch(e => console.log("Error transition:", e));
+    } else {
+        mostrarInvitacionFinal();
+    }
 
-            transitionVideo.onended = () => {
-                transitionVideo.classList.add("fade-out");
+    // Función para revelar la web final
+    function mostrarInvitacionFinal() {
+        if (webRevelada) return;
+        webRevelada = true;
 
-                setTimeout(() => {
-                    transitionVideo.remove();
-                    overlay.remove();
-                    
-                    // La música ahora se reproducirá perfectamente sin bloqueos de iOS
-                    music.play().catch(e => console.log("Error música final:", e));
-                    
-                    document.body.style.overflow = "auto";
-                }, 1000);
-            };
+        // Liberar scroll y activar fondos
+        document.body.removeAttribute("style");
+        document.documentElement.removeAttribute("style");
+        document.body.classList.add("boda-activada");
 
-        }, { once: true });
-
-        /* ==========================================
-            VIDEO SECCIÓN 3
-        ========================================== */
-        const seccion3 = document.getElementById('seccion3');
-        const videoSeccion3 = document.getElementById('video-seccion3');
-
-        if (seccion3 && videoSeccion3) {
-            const observerVideo = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        videoSeccion3.style.display = 'block';
-                        videoSeccion3.muted = true;
-                        videoSeccion3.playsInline = true;
-                        videoSeccion3.play().catch(()=>{});
-                    } else {
-                        videoSeccion3.pause();
-                        videoSeccion3.style.display = 'none';
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            observerVideo.observe(seccion3);
+        if (mainContent) {
+            mainContent.classList.add("visible");
         }
+
+        if (introContainer) {
+            introContainer.classList.add("fade-out-intro");
+        }
+
+        // Arrancar la música
+        if (music) {
+            music.play().catch(e => console.log("Error música:", e));
+        }
+
+        // Limpieza del DOM
+        setTimeout(() => {
+            if (introContainer) introContainer.remove();
+        }, 1000);
+    }
+
+}, { once: true });
 
 /* =========================
     COLLAGE DE FOTOS
