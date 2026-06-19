@@ -140,7 +140,7 @@ function obtenerParametroURL(nombre) {
 document.addEventListener('DOMContentLoaded', () => {
     const nombreInvitado = obtenerParametroURL('nombre');
     const cuposDisponibles = obtenerParametroURL('cupos');
-    const MesaAsignada = obtenerParametroURL('Mesa');
+    const MesaAsignada = obtenerParametroURL('mesa');
 
     if (nombreInvitado) {
         document.getElementById('nombre-personalizado').textContent =
@@ -272,129 +272,92 @@ overlay.addEventListener("click", () => {
 
 }, { once: true });
 
-/* =========================
-    COLLAGE DE FOTOS
-========================= */
+/* =========================================
+    COLLAGE DE FOTOS (CONTROLADO POR ZONA)
+   ========================================= */
 
 const photos = document.querySelectorAll(".photo");
 const heart = document.getElementById("heart");
+const scrollContainer = document.querySelector(".scroll-container"); // Detectamos el contenedor real
 
 let heartAnimated = false;
 
 const heartPositions = [
-
-    {x:44,y:20},
-    {x:56,y:20},
-
-    {x:36,y:30},
-    {x:44,y:34},
-    {x:56,y:34},
-    {x:64,y:30},
-
-    {x:30,y:42},
-    {x:40,y:44},
-    {x:50,y:46},
-    {x:60,y:44},
-    {x:70,y:42},
-
-    {x:36,y:58},
-    {x:44,y:60},
-    {x:56,y:60},
-    {x:64,y:58},
-
-    {x:40,y:74},
-    {x:50,y:76},
-    {x:60,y:74},
-
-    {x:46,y:88},
-    {x:54,y:88}
-
+    {x:44,y:20}, {x:56,y:20},
+    {x:36,y:30}, {x:44,y:34}, {x:56,y:34}, {x:64,y:30},
+    {x:30,y:42}, {x:40,y:44}, {x:50,y:46}, {x:60,y:44}, {x:70,y:42},
+    {x:36,y:58}, {x:44,y:60}, {x:56,y:60}, {x:64,y:58},
+    {x:40,y:74}, {x:50,y:76}, {x:60,y:74},
+    {x:46,y:88}, {x:54,y:88}
 ];
 
 window.addEventListener("scroll", animatePhotos);
 window.addEventListener("resize", animatePhotos);
 
 function animatePhotos(){
+    if (!scrollContainer) return;
 
-    const maxScroll =
-        document.body.scrollHeight - window.innerHeight;
+    // 1. Obtener la posición exacta del contenedor respecto a la pantalla
+    const rect = scrollContainer.getBoundingClientRect();
+    
+    // 2. Calcular cuánto espacio total tiene el contenedor para desplazarse
+    const totalHeight = rect.height - window.innerHeight;
 
-    const progress =
-        window.scrollY / maxScroll;
+    // 3. Medir el progreso basándonos estrictamente en la entrada del contenedor
+    // Empezará justo cuando el contenedor llegue al tope superior de la pantalla
+    let progress = -rect.top / totalHeight;
 
-    const segment =
-        1 / photos.length;
+    // Forzar límites estricto entre 0 y 1 para que no se alteren los extremos
+    progress = Math.max(0, Math.min(progress, 1));
 
-    photos.forEach((photo,index)=>{
+    const segment = 1 / photos.length;
 
-        const start =
-            segment * index;
+    photos.forEach((photo, index) => {
 
-        let localProgress =
-            (progress - start) / segment;
+        const start = segment * index;
 
-        localProgress =
-            Math.max(0, Math.min(localProgress,1));
+        let localProgress = (progress - start) / segment;
+        localProgress = Math.max(0, Math.min(localProgress, 1));
 
-        const fadeProgress =
-            Math.min(localProgress / 0.4, 1);
+        const fadeProgress = Math.min(localProgress / 0.4, 1);
+        
+        const moveProgress = Math.max(
+            0,
+            (localProgress - 0.4) / 0.6
+        );
 
-        const moveProgress =
-            Math.max(
-                0,
-                (localProgress - 0.4) / 0.6
-            );
+        const finalX = heartPositions[index].x;
+        const finalY = heartPositions[index].y;
 
-        const finalX =
-            heartPositions[index].x;
+        const currentX = 50 + (finalX - 50) * moveProgress;
+        const currentY = 50 + (finalY - 50) * moveProgress;
 
-        const finalY =
-            heartPositions[index].y;
+        const maxSize = Math.min(window.innerWidth * 0.75, 320);
+        const minSize = Math.min(window.innerWidth * 0.18, 90);
 
-        const currentX =
-            50 + (finalX - 50) * moveProgress;
+        const size = maxSize - ((maxSize - minSize) * moveProgress);
 
-        const currentY =
-            50 + (finalY - 50) * moveProgress;
-
-        const maxSize =
-            Math.min(window.innerWidth * 0.75, 320);
-
-        const minSize =
-            Math.min(window.innerWidth * 0.18, 90);
-
-        const size =
-            maxSize -
-            ((maxSize - minSize) * moveProgress);
-
-        const rotation =
-            ((index % 2 === 0) ? -8 : 8)
-            * moveProgress;
+        const rotation = ((index % 2 === 0) ? -8 : 8) * moveProgress;
 
         photo.style.opacity = fadeProgress;
-
         photo.style.width = `${size}px`;
         photo.style.height = `${size}px`;
-
         photo.style.left = `${currentX}%`;
         photo.style.top = `${currentY}%`;
 
         photo.style.transform =
         `translate(-50%, -50%)
          scale(${0.8 + fadeProgress * 0.2})
-        rotate(${rotation}deg)`;
+         rotate(${rotation}deg)`;
     });
 
+    // Control de animación del latido final
     if(progress > 0.97 && !heartAnimated){
-
         heart.classList.add("heartbeat");
-
         heartAnimated = true;
-
-        setTimeout(()=>{
+        setTimeout(() => {
             heart.classList.remove("heartbeat");
-        },1000);
-
+        }, 1000);
     }
 
     if(progress < 0.9){
@@ -402,4 +365,5 @@ function animatePhotos(){
     }
 }
 
+// Ejecutar una vez al cargar para posicionar correctamente las fotos invisibles en el centro
 animatePhotos();
